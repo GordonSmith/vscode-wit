@@ -1,7 +1,7 @@
 {
     "name": "wit-lang",
-    "displayName": "WebAssembly Interface Type (WIT) Language",
-    "description": "WebAssembly Interface Type (WIT) Language Extension for VSCode",
+    "displayName": "WIT (WebAssembly Interface Type) Language",
+    "description": "WIT (WebAssembly Interface Type) Language Extension for VSCode",
     "private": true,
     "version": "0.0.0",
     "publisher": "GordonSmith",
@@ -64,9 +64,6 @@
     "engines": {
         "vscode": "^1.96.0"
     },
-    "categories": [
-        "Programming Languages"
-    ],
     "activationEvents": [
         "onLanguage:wit"
     ],
@@ -125,6 +122,15 @@
             "panel": []
         }
     },
+    "categories": [
+        "Programming Languages"
+    ],
+    "tags": [
+        "wit",
+        "wasm",
+        "webassembly",
+        "wasi"
+    ],
     "author": "Gordon Smith",
     "license": "Apache-2.0",
     "repository": {
