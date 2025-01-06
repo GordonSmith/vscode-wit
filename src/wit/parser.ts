@@ -21,7 +21,7 @@ export interface ParseResponse {
     tree?: any;
     lexErrors: ErrorListenerError[];
     parseErrors: ErrorListenerError[];
-    exception?: ErrorListenerError;
+    exception?: any;
 }
 
 export function parse(text: string): ParseResponse {
@@ -51,8 +51,8 @@ export function parse(text: string): ParseResponse {
             lexErrors: lexerErrorListener.errors,
             parseErrors: parserErrorListener.errors,
         };
-    } catch (e) {
-        console.log(e);
+    } catch (e: any) {
+        console.error(e);
         return {
             full: false,
             lexErrors: [],

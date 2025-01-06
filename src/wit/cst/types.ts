@@ -3,7 +3,7 @@ import { WitScope } from "./scope";
 
 export class WITType extends WITNode {
 
-    get type(): WITType {
+    get type(): WITType | undefined {
         return this;
     }
 
@@ -11,7 +11,7 @@ export class WITType extends WITNode {
         super(ctx);
     }
 
-    eval(): ExpresionType {
+    eval(): ExpresionType | undefined {
         return undefined;
     }
 }
@@ -74,8 +74,8 @@ export class ArrayType extends WITType {
 
 export class TypeDeclaration extends WITType {
 
-    get type(): WITType {
-        return this.rhs.type;
+    get type(): WITType | undefined {
+        return this.rhs?.type;
     }
 
     constructor(ctx: any, scope: WitScope, readonly id: string, readonly rhs?: WITType) {
@@ -85,14 +85,14 @@ export class TypeDeclaration extends WITType {
         }
     }
 
-    eval(): ExpresionType {
-        return this.type.eval();
+    eval(): ExpresionType | undefined {
+        return this.type?.eval();
     }
 }
 
 export class TypeAlias extends TypeDeclaration {
 
-    get type(): WITType {
+    get type(): WITType | undefined {
         return this.typeDeclaration.type;
     }
 
@@ -100,7 +100,7 @@ export class TypeAlias extends TypeDeclaration {
         super(ctx, scope, id);
     }
 
-    eval(): ExpresionType {
-        return this.type.eval();
+    eval(): ExpresionType | undefined {
+        return this.type?.eval();
     }
 }

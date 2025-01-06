@@ -7,18 +7,14 @@
         "module": "ES6",
         "moduleResolution": "node",
         "target": "ES2022",
-        "jsx": "react",
-        "allowJs": true,
         "sourceMap": true,
-        "noImplicitAny": false,
-        "noEmitOnError": false,
-        "noUnusedLocals": false,
-        "strictNullChecks": false,
+        "noEmit": true,
+        "strict": true,
+        "allowImportingTsExtensions": true,
         "importHelpers": true,
         "skipLibCheck": true,
         "lib": [
-            "dom",
-            "ES2019"
+            "ES2022"
         ]
     },
     "include": [
