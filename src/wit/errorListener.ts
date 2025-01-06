@@ -19,11 +19,11 @@ export class WITErrorListener extends ErrorListener<any> {
         super();
     }
 
-    syntaxError(recognizer, offendingSymbol, line, column, msg, err) {
+    syntaxError(recognizer: any, offendingSymbol: any, line: number, column: number, msg: string, err: any) {
         this.errors.push({
             source: "ErrorListener",
             line,
-            length: offendingSymbol?.stop ?? 0 - offendingSymbol?.start ?? 0,
+            length: (offendingSymbol?.stop ?? 0) - (offendingSymbol?.start ?? 0),
             column,
             message: msg
         });
@@ -34,6 +34,6 @@ export class WITErrorListener extends ErrorListener<any> {
     }
 
     log() {
-        this.errors.forEach(e => console.log(`${e.source}:  ${e.message}`));
+        this.errors.forEach(e => console.info(`${e.source}:  ${e.message}`));
     }
 }

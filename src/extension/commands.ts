@@ -22,10 +22,10 @@ export class WITCommands {
         return commands;
     }
 
-    checkTextDocument(document: vscode.TextDocument, config?: vscode.WorkspaceConfiguration) {
+    checkTextDocument(document?: vscode.TextDocument, config?: vscode.WorkspaceConfiguration) {
         if (document) {
             const witFile = new WITFileScope(document.getText(), document.fileName, document.getText());
-            commands._diagnostic.set(document.fileName, witFile.allErrors());
+            commands?._diagnostic.set(document.fileName, witFile.allErrors());
         }
     }
 

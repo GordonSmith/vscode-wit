@@ -1,14 +1,14 @@
-import { ExpresionType, WITNode } from "./node";
+import { ExpresionT, ExpresionType, WITNode } from "./node";
 import { ArrowParamater, DataExpression, isRHS, RHS } from "./expression";
 import { WitScope } from "./scope";
 
 export class WITDeclaration extends WITNode {
 
-    get type(): ExpresionType {
+    get type(): ExpresionType | undefined {
         return undefined;
     }
 
-    get expression(): RHS {
+    get expression(): RHS | undefined {
         return undefined;
     }
 
@@ -16,14 +16,14 @@ export class WITDeclaration extends WITNode {
         super(ctx);
     }
 
-    eval() {
+    eval(): ExpresionT | undefined {
         return undefined;
     }
 }
 
 export class Declaration extends WITDeclaration {
 
-    get type(): ExpresionType {
+    get type(): ExpresionType | undefined {
         return this.expression.type;
     }
 
@@ -54,11 +54,11 @@ export class Declaration extends WITDeclaration {
 export class Alias extends WITDeclaration {
 
     get type(): ExpresionType {
-        return this.declaration.type;
+        return this.declaration.type!;
     }
 
     get expression(): RHS {
-        return this.declaration.expression;
+        return this.declaration.expression!;
     }
 
     constructor(ctx: any, scope: WitScope, id: string, readonly declaration: WITDeclaration) {

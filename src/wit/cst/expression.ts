@@ -5,8 +5,8 @@ import { ArrayType, WITType, RowType, TypeDeclaration } from "./types";
 import { Declaration, WITDeclaration } from "./declaration";
 
 export interface RHS {
-    type: ExpresionType;
-    eval(): ExpresionT;
+    type?: ExpresionType;
+    eval(): ExpresionT | undefined;
     errors(): WITError[];
 }
 
@@ -16,7 +16,7 @@ export function isRHS(_: any): _ is RHS {
 
 export class WITExpression extends WITNode implements RHS {
 
-    get type(): ExpresionType {
+    get type(): ExpresionType | undefined {
         return undefined;
     }
 
@@ -24,7 +24,7 @@ export class WITExpression extends WITNode implements RHS {
         super(ctx);
     }
 
-    eval(): ExpresionT {
+    eval(): ExpresionT | undefined {
         return undefined;
     }
 
@@ -59,14 +59,14 @@ export class UnaryMinusExpression extends WITExpression {
     }
 
     eval(): number {
-        return -this.expression.eval();
+        return -(this.expression.eval() ?? 0);
     }
 }
 
 type MultiplicativeT = "*" | "/" | "%";
 export class MultiplicativeExpression extends WITExpression {
 
-    get type(): ExpresionType {
+    get type(): ExpresionType | undefined {
         return this.lhs.type;
     }
 
@@ -74,7 +74,7 @@ export class MultiplicativeExpression extends WITExpression {
         super(ctx, scope);
     }
 
-    eval(): boolean | number | string {
+    eval(): boolean | number | string | undefined {
         const lhs = this.lhs.eval();
         const rhs = this.rhs.eval();
         if (typeof lhs === "number" && typeof rhs === "number") {
@@ -93,7 +93,7 @@ export class MultiplicativeExpression extends WITExpression {
 type AdditiveT = "+" | "-";
 export class AdditiveExpression extends WITExpression {
 
-    get type(): ExpresionType {
+    get type(): ExpresionType | undefined {
         return this.lhs.type;
     }
 
@@ -101,7 +101,7 @@ export class AdditiveExpression extends WITExpression {
         super(ctx, scope);
     }
 
-    eval(): boolean | number | string {
+    eval(): boolean | number | string | undefined {
         const lhs = this.lhs.eval();
         const rhs = this.rhs.eval();
         if (typeof lhs === "number" && typeof rhs === "number") {
@@ -123,7 +123,7 @@ export class RelationalExpression extends WITExpression {
         super(ctx, scope);
     }
 
-    eval(): boolean | number | string {
+    eval(): boolean | number | string | undefined {
         const lhs = this.lhs.eval();
         const rhs = this.rhs.eval();
         if (typeof lhs === "boolean" && typeof rhs === "boolean" ||
@@ -188,7 +188,7 @@ export class LogicalExpression extends WITExpression {
         super(ctx, scope);
     }
 
-    eval(): boolean | number | string {
+    eval(): boolean | number | string | undefined {
         const lhs = this.lhs.eval();
         const rhs = this.rhs.eval();
         if (typeof lhs === "boolean" && typeof rhs === "boolean") {
@@ -199,7 +199,7 @@ export class LogicalExpression extends WITExpression {
 
 export class IdentifierExpression extends WITExpression {
 
-    get type(): ExpresionType {
+    get type(): ExpresionType | undefined {
         return this.ref?.type;
     }
 
@@ -260,7 +260,7 @@ export class StringExpression extends WITExpression {
 
 export class DataExpression extends WITExpression {
 
-    rowType: RowType;
+    rowType: RowType | undefined;
 
     get type(): ExpresionType {
         return "data";
@@ -300,7 +300,7 @@ export class DataExpression extends WITExpression {
 
 export class ArrayExpression extends WITExpression {
 
-    rowType: ArrayType;
+    rowType: ArrayType | undefined;
 
     get type(): ExpresionType {
         return (this.values?.length ? this.values[0].type + "[]" : "unknown[]") as ExpresionType;
@@ -333,7 +333,7 @@ export class ArrayExpression extends WITExpression {
 
 export class FunctionCallExpression extends WITExpression {
 
-    get type(): ExpresionType {
+    get type(): ExpresionType | undefined {
         return this.func?.returnType;
     }
 
@@ -348,7 +348,7 @@ export class FunctionCallExpression extends WITExpression {
 
 class FutureExpression extends WITExpression {
 
-    get type(): ExpresionType {
+    get type(): ExpresionType | undefined {
         return this.fieldType.eval();
     }
 
@@ -378,7 +378,7 @@ export class ArrowParamater extends WITNode implements RHS {
         return this;
     }
 
-    eval(): ExpresionT {
+    eval(): ExpresionT | undefined {
         return this.defaultExpression()?.eval();
     }
 
@@ -404,7 +404,7 @@ export class ArrowBody extends WITNode {
 
     readonly items: WITDeclaration[];
 
-    get type(): ExpresionType {
+    get type(): ExpresionType | undefined {
         return this.returnExpression.type;
     }
 

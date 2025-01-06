@@ -2,11 +2,10 @@
 
 grammar Wit;
 
-witFile
-  : packageDecl? (packageItems | nestedPackageDefinition) EOF
+witFile: (packageDecl ';')? witFileItems* EOF
   ;
 
-simpleTest: 'test' validSemver ';'
+witFileItems: packageItems | nestedPackageDefinition
   ;
 
 nestedPackageDefinition
@@ -14,13 +13,10 @@ nestedPackageDefinition
   ;
 
 packageDecl
-  : 'package' (id ':')+ id ('/' id)* ('@' validSemver)? ';'
+  : 'package' (id ':')+ id ('/' id)* ('@' validSemver)?
   ;
 
-packageItems
-  : toplevelUseItem+
-  | interfaceItem+
-  | worldItem+
+packageItems: toplevelUseItem | interfaceItem | worldItem
   ;
 
 //  Item: toplevel-use ---

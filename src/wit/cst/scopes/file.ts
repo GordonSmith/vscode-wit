@@ -23,7 +23,7 @@ export class WITFileScope extends WitScope {
         }
 
         this._parsed = parse(text);
-        if (this._parsed.full) {
+        if (this._parsed.full && this.visitWitFile) {
             try {
                 this.visitWitFile(this._parsed.tree);
             } catch (e) {

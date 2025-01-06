@@ -21,7 +21,7 @@ export class WITDiagnosticCollection {
     }
 
     async set(filePath: string, errors: WITError[]) {
-        const fileErrors = {};
+        const fileErrors: { [key: string]: vscode.Diagnostic[] } = {};
         fileErrors[filePath] = [];
 
         for (const e of errors) {

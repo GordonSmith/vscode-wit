@@ -4,7 +4,7 @@ import { WitScope, resolveRef } from "../scope";
 import { Declaration } from "../declaration";
 import { TypeDeclaration } from "../types";
 
-function nullOrArray(item) {
+function nullOrArray(item: any) {
     if (Array.isArray(item)) {
         return item[0];
     }
@@ -13,17 +13,17 @@ function nullOrArray(item) {
 export class WITFunctionScope extends WitScope implements RHS {
 
     params: ArrowParamater[] = [];
-    body: ArrowBody;
+    body: ArrowBody | undefined;
 
     get type(): ExpresionType {
         return "function";
     }
 
-    get returnType(): ExpresionType {
+    get returnType(): ExpresionType | undefined {
         return this.body?.returnExpression?.type;
     }
 
-    constructor(readonly path: string, readonly ctx, readonly paramsScope: WitScope) {
+    constructor(readonly path: string, readonly ctx: any, readonly paramsScope: WitScope) {
         super("", path);
         // this.visitArrowFunctionExpression(this.ctx);
     }
@@ -32,11 +32,11 @@ export class WITFunctionScope extends WitScope implements RHS {
         return super.resolveType(id) || this.paramsScope.resolveType(id);
     }
 
-    eval(): ExpresionT {
+    eval(): ExpresionT | undefined {
         return this.body?.returnExpression?.eval();
     }
 
-    calc(args: WITExpression[]): ExpresionT {
+    calc(args: WITExpression[]): ExpresionT | undefined {
         const defaultExpressions = this.params.map(p => p.defaultExpression());
         this.params.forEach((param, i) => param.defaultExpression(args[i] || param.defaultExpression()));
         const retVal = this.body?.returnExpression?.eval();
@@ -44,8 +44,8 @@ export class WITFunctionScope extends WitScope implements RHS {
         return retVal;
     }
 
-    contains(line: number, column: number) {
-        return this.body.contains(line, column);
+    contains(line: number, column: number): boolean {
+        return this.body?.contains(line, column) ?? false;
     }
 
     //  Visitors  ---
