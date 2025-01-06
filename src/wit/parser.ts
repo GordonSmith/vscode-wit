@@ -1,13 +1,13 @@
-import { CharStream, CommonTokenStream, ParseTreeWalker } from 'antlr4';
+import { CharStream, CommonTokenStream, ParseTreeWalker } from "antlr4";
 import { ErrorListenerError, WITErrorListener } from "./errorListener";
 import WitLexer from "./grammar/WitLexer";
 import WitParser, { WitFileContext } from "./grammar/WitParser";
-import WitListener from './grammar/WitListener';
+import WitListener from "./grammar/WitListener";
 
 class MyTreeWalker extends WitListener {
 
     exitWitFile = (ctx: WitFileContext) => {
-        console.log("In WitFileRule");
+        console.info("In WitFileRule");
     };
 }
 
@@ -21,7 +21,7 @@ export interface ParseResponse {
     tree?: any;
     lexErrors: ErrorListenerError[];
     parseErrors: ErrorListenerError[];
-    exception?: ErrorListenerError;
+    exception?: any;
 }
 
 export function parse(text: string): ParseResponse {
@@ -51,8 +51,8 @@ export function parse(text: string): ParseResponse {
             lexErrors: lexerErrorListener.errors,
             parseErrors: parserErrorListener.errors,
         };
-    } catch (e) {
-        console.log(e);
+    } catch (e: any) {
+        console.error(e);
         return {
             full: false,
             lexErrors: [],

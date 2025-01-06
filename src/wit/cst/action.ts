@@ -5,7 +5,7 @@ import { WITExpression } from "./expression";
 
 export class WITAction extends WITNode {
 
-    eval(): ExpresionT {
+    eval(): ExpresionT | undefined {
         return undefined;
     }
 }

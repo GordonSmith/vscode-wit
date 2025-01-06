@@ -1,0 +1,61 @@
+name: ci
+
+on:
+  push:
+    branches: 
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npm run download-antlr4
+
+      - name: Run lint
+        run: |
+          npm run lint
+
+      - name: Build
+        run: |
+          npm run build
+
+      - name: Run tests
+        run: |
+          npm test
+
+      - name: Initialize Release Please
+        id: release
+        if: ${{ github.event_name == 'push' }}
+        uses: googleapis/release-please-action@v4
+        with:
+          target-branch: ${{ github.ref_name }}
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
+
+      - uses: lannonbr/vsce-action@4.0.0
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          args: "publish -p $VSCE_TOKEN"
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}

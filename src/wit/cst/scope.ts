@@ -12,7 +12,7 @@ export interface Range {
     length: number
 }
 
-export function resolveRef(refIn) {
+export function resolveRef(refIn: any) {
     let ref = refIn;
     while (ref?.ref) {
         ref = ref.ref;
@@ -42,7 +42,7 @@ export class WitScope extends WitVisitor<void> {
         });
     }
 
-    ctxError(ctx, message: string, source: string = "src/witcc/file.ts") {
+    ctxError(ctx: any, message: string, source: string = "src/witcc/file.ts") {
         let length = ctx.stop.stop - ctx.start.start + 1;
         if (length < 0) {
             length = 0;
@@ -57,7 +57,7 @@ export class WitScope extends WitVisitor<void> {
         });
     }
 
-    tokError(tok, message: string, source: string = "src/witcc/file.ts") {
+    tokError(tok: any, message: string, source: string = "src/witcc/file.ts") {
         let length = tok.symbol.stop - tok.symbol.start + 1;
         if (length < 0) {
             length = 0;
@@ -110,7 +110,7 @@ export class WitScope extends WitVisitor<void> {
     //     return retVal;
     // }
 
-    resolve(id: string): WITDeclaration | undefined {
+    resolve(id: string): WITDeclaration {
         const idParts = id.split(".");
         let retVal: any = this;
         let partID = idParts.shift();
