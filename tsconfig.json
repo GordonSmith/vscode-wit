@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "rootDir": ".",
+        "outDir": "lib-es6",
+        "declaration": true,
+        "declarationDir": "./types",
+        "module": "ES6",
+        "moduleResolution": "node",
+        "target": "ES2022",
+        "jsx": "react",
+        "allowJs": true,
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "noEmitOnError": false,
+        "noUnusedLocals": false,
+        "strictNullChecks": false,
+        "importHelpers": true,
+        "skipLibCheck": true,
+        "lib": [
+            "dom",
+            "ES2019"
+        ]
+    },
+    "include": [
+        "src/extension.ts"
+    ]
+}

@@ -1,0 +1,13 @@
+build/
+docs/report
+grammar/.antlr
+grammar/*.txt
+lib-*/
+node_modules/
+src/wit/cst-ref/
+src/wit/grammar/
+tmp/
+types/
+*.jar
+*.vsix
+*.tmp
