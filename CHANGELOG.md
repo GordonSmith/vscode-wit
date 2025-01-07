@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/GordonSmith/vscode-wit/compare/v1.0.2...v1.0.3) (2025-01-07)
+
+
+### Bug Fixes
+
+* Incorrect repository url in package.json ([513a2f3](https://github.com/GordonSmith/vscode-wit/commit/513a2f30fd1db0c0cdb077331574f4b8684bed5e))
+
 ## [1.0.2](https://github.com/GordonSmith/vscode-wit/compare/v1.0.1...v1.0.2) (2025-01-07)
 
 
