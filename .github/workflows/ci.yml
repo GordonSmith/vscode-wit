@@ -18,6 +18,16 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Initialize Release Please
+        id: release
+        if: ${{ github.event_name == 'push' }}
+        uses: googleapis/release-please-action@v4
+        with:
+          target-branch: ${{ github.ref_name }}
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
+
       - name: Checkout Sources
         uses: actions/checkout@v4
 
@@ -42,16 +52,6 @@ jobs:
       - name: Run tests
         run: |
           npm test
-
-      - name: Initialize Release Please
-        id: release
-        if: ${{ github.event_name == 'push' }}
-        uses: googleapis/release-please-action@v4
-        with:
-          target-branch: ${{ github.ref_name }}
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-          config-file: .github/release-please-config.json
-          manifest-file: .github/.release-please-manifest.json
 
       - uses: lannonbr/vsce-action@4.0.0
         if: ${{ steps.release.outputs.release_created }}

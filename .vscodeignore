@@ -1,0 +1,14 @@
+# Ignore everything
+*
+*/**
+
+# Whitelist required files
+!dist*/**/*
+!resources/**/*
+
+!.vscodeignore
+!CHANGELOG.md
+!LICENSE
+!package.json
+!package.*.json
+!README.md
