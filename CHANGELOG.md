@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/GordonSmith/vscode-wit/compare/v1.0.1...v1.0.2) (2025-01-07)
+
+
+### Bug Fixes
+
+* release-please out of sync ([869727d](https://github.com/GordonSmith/vscode-wit/commit/869727da24a1dc16a90e23eaa717881f90717627))
+
 ## 1.0.1 (2025-01-07)
 
 
