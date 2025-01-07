@@ -134,6 +134,6 @@
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/GordonSmith/wit.git"
+        "url": "https://github.com/GordonSmith/vscode-wit.git"
     }
 }
