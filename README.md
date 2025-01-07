@@ -1,4 +1,4 @@
-# WIT IDL for VSCode
+# <img src="resources/wit-icon.png" alt="logo" width="56"/> Language extension for VS Code
 
 This package complements [bytecodealliance.wit-idl](https://marketplace.visualstudio.com/items?itemName=BytecodeAlliance.wit-idl) by adding an Antlr4 grammar, which (in time) will drive various language specific features.
 
@@ -7,7 +7,7 @@ The description of the WIT format can be found at: https://github.com/WebAssembl
 ## Features
 
 - [x] Add dependy on [bytecodealliance.wit-idl](https://marketplace.visualstudio.com/items?itemName=BytecodeAlliance.wit-idl)
-- [x] Add Antlr4 grammar
+- [x] Add Antlr4 grammar ([Wit.g4](grammar/Wit.g4))
 - [x] "Quick" syntax checking (F7)
 - [x] "Quick" syntax checking on open/save (optional behind config flag)
 - [ ] Web host support
@@ -33,15 +33,9 @@ This extension contributes the following settings:
 * `wit.syntaxCheckOnLoad`: Enable/disable syntax check on load (defaults on).
 * `wit.syntaxCheckOnSave`: Enable/disable syntax check on save (defaults on).
 
-## Known Issues
-
-Placeholder for known issues.
-
 ## Release Notes
 
-### 0.0.0
-
-Initial release, includes Antlr4 grammar and "quick" syntax checking.
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 ---
 

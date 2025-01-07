@@ -1,8 +1,9 @@
 {
+    "private": true,
     "name": "wit-lang",
     "displayName": "WIT (WebAssembly Interface Type) Language",
     "description": "WIT (WebAssembly Interface Type) Language Extension for VSCode",
-    "private": true,
+    "icon": "resources/wit-icon.png",
     "version": "1.0.1",
     "publisher": "GordonSmith",
     "type": "commonjs",

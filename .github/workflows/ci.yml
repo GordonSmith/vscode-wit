@@ -26,7 +26,6 @@ jobs:
           target-branch: ${{ github.ref_name }}
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
 
       - name: Checkout Sources
         uses: actions/checkout@v4
