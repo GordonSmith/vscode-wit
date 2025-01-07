@@ -39,9 +39,10 @@ world root {
         const files = getWitFiles(samplesDir);
 
         files.forEach(file => {
-            it(`should parse ${file}`, () => {
+            it(`${file}`, () => {
                 const input = readFileSync(file, 'utf-8');
                 const result = parse(input);
+                expect(result.full).to.be.true;
                 expect(result.exception).to.be.undefined;
                 expect(result.lexErrors).to.be.empty;
                 expect(result.parseErrors).to.be.empty;
