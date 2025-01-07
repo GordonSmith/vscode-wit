@@ -4,7 +4,7 @@
     "displayName": "WIT (WebAssembly Interface Type) Language",
     "description": "WIT (WebAssembly Interface Type) Language Extension for VSCode",
     "icon": "resources/wit-icon.png",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "publisher": "GordonSmith",
     "type": "commonjs",
     "main": "./dist/extension.js",
