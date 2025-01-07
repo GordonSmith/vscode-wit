@@ -14,7 +14,7 @@ async function main(tsconfigRaw, entryPoint, platform, format, plugins = []) {
         outdir: outputDirectory,
         bundle: true,
         format,
-        minify: false, //production,
+        minify: production,
         sourcemap: !production ? "linked" : false,
         platform,
         target: platform === "node" ? "node20" : "es2022",

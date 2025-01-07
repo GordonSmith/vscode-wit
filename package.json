@@ -21,6 +21,7 @@
         "build-ts-dev": "node esbuild.mjs --development",
         "build-ts-watch": "node esbuild.mjs --watch --development",
         "build": "npm-run-all --serial grammar-generate --parallel gen-types build-ts",
+        "build-dev": "npm-run-all --serial grammar-generate --parallel gen-types build-ts-dev",
         "watch": "run-p gen-types-watch build-ts-watch",
         "lint": "eslint \"src/**/*.ts*\"",
         "lint-fix": "eslint --fix \"src/**/*.ts*\"",
