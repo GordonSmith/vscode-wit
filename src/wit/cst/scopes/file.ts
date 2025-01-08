@@ -4,6 +4,7 @@ import { witError, WITError } from "../node";
 import { WITDeclaration } from "../declaration";
 import { WitScope, Range } from "../scope";
 import { TypeDeclaration } from "../types";
+import { PackageDeclContext } from "../../grammar/WitParser";
 
 export interface ImportedHLFile extends Range {
     file: WITFileScope;
@@ -78,6 +79,10 @@ export class WITFileScope extends WitScope {
     // }
 
     //  Visitor overrides  ---
+
+    visitPackageDecl = (ctx: PackageDeclContext): void => {
+        debugger;
+    }
 
     // visitImportStatement(ctx) {
     //     const children = super.visitImportStatement(ctx);

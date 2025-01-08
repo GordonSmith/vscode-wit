@@ -2,31 +2,41 @@
 
 grammar Wit;
 
-witFile: (packageDecl ';')? witFileItems* EOF
+witFile: (package = packageDecl ';')? witFileItems* EOF
   ;
 
 witFileItems: packageItems | nestedPackageDefinition
   ;
 
 nestedPackageDefinition
-  : packageDecl '{' packageItems* '}'
+  : package = packageDecl '{' packageItems* '}'
   ;
 
-packageDecl
-  : 'package' (id ':')+ id ('/' id)* ('@' validSemver)?
+packageDecl: 'package' label = packageLabel atSemver?
   ;
 
-packageItems: toplevelUseItem | interfaceItem | worldItem
+packageLabel
+  : (namespace = id ':')+ packagePart += id (
+    '/' packagePart += id
+  )*
+  ;
+
+packageItems
+  : uses = toplevelUseItem
+  | interfaces = interfaceItem
+  | worlds = worldItem
   ;
 
 //  Item: toplevel-use ---
-toplevelUseItem: 'use' usePath ('as' id)? ';'
+toplevelUseItem: 'use' label = usePath ('as' id)? ';'
   ;
 
 usePath
-  : id
-  | id ':' id '/' id ('@' validSemver)?
-  | ( id ':')+ id ( '/' id)+ ('@' validSemver)?
+  : packagePart += id
+  | namespace = id ':' packagePart += id '/' packagePart += id atSemver?
+  | (namespace = id ':')+ packagePart += id (
+    '/' packagePart += id
+  )+ atSemver?
   ;
 
 //  Item: World ---
@@ -240,7 +250,10 @@ deprecatedGate: '@deprecated' '(' versionField ')'
 featureField: 'feature' '=' id
   ;
 
-versionField: 'version' '=' validSemver
+versionField: 'version' '=' version = validSemver
+  ;
+
+atSemver: '@' version = validSemver
   ;
 
 validSemver: VALID_SEMVER

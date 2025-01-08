@@ -1,13 +1,40 @@
 import { CharStream, CommonTokenStream, ParseTreeWalker } from "antlr4";
 import { ErrorListenerError, WITErrorListener } from "./errorListener";
 import WitLexer from "./grammar/WitLexer";
-import WitParser, { WitFileContext } from "./grammar/WitParser";
+import WitParser, { PackageDeclContext, UsePathContext, WitFileContext } from "./grammar/WitParser";
 import WitListener from "./grammar/WitListener";
 
 class MyTreeWalker extends WitListener {
 
+    enterWitFile = (ctx: WitFileContext): void => {
+        console.log("enterWitFile");
+    };
+
     exitWitFile = (ctx: WitFileContext) => {
-        console.info("In WitFileRule");
+        console.log("exitWitFile");
+    };
+
+    enterPackageDecl = (ctx: PackageDeclContext): void => {
+        const ns = ctx._label?._namespace?.getText();
+        const path = ctx._label?._packagePart?.map(p => p.getText()).join("->");
+        const label = ctx._label?.getText();
+        const version = ctx.atSemver()?._version?.getText();
+        console.log("enterPackageDecl", ns, path, label, version);
+    };
+
+    exitPackageDecl = (ctx: PackageDeclContext): void => {
+        const label = ctx._label?.getText();
+        const version = ctx.atSemver()?._version?.getText();
+        console.log("exitPackageDecl", label, version);
+    };
+
+    enterUsePath = (ctx: UsePathContext): void => {
+        debugger;
+        // const ns = ctx._namespace?.getText();
+        // const path = ctx._packagePart?.map(p => p.getText()).join("->");
+        // // const label = ctx._label?.getText();
+        // const version = ctx.atSemver()?._version?.getText();
+        // console.log("enterUsePath", ns, path, version);
     };
 }
 
