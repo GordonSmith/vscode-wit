@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { validateWitSyntaxDetailedFromWasm, type WitValidationResult } from "./wasmUtils.js";
-import { extractErrorInfo } from "./errorParser.js";
+import { ErrorInfo, extractErrorInfo, parseWitParserError, parseWitBindgenError } from "./errorParser.js";
 
 export { extractErrorInfo };
 
@@ -41,7 +41,7 @@ export class WitSyntaxValidator {
             } else {
                 const errorMessage = validationResult.error || "Unknown WIT validation error";
 
-                const errorInfo = this.parseWitParserError(errorMessage, path);
+                const errorInfo = parseWitParserError(errorMessage, path);
                 if (errorInfo) {
                     return errorInfo;
                 }
@@ -242,134 +242,5 @@ export class WitSyntaxValidator {
 
     public dispose(): void {
         this.diagnosticCollection.dispose();
-    }
-
-    /**
-     * Parse wit-parser error messages to extract location information
-     * @param errorMessage - The error message from wit-parser
-     * @param filePath - The file path for the error
-     * @returns Parsed error information or null if parsing fails
-     */
-    private parseWitParserError(errorMessage: string, filePath: string): ReturnType<typeof extractErrorInfo> | null {
-        // Handle undefined type errors specifically
-        const undefinedTypeMatch = errorMessage.match(/undefined type `([^`]+)`/);
-        if (undefinedTypeMatch) {
-            const typeName = undefinedTypeMatch[1];
-            const locationMatch = errorMessage.match(/-->\s*(.+?):\s*(\d+):\s*(\d+)/);
-            const row = locationMatch ? parseInt(locationMatch[2], 10) : 1;
-            const column = locationMatch ? parseInt(locationMatch[3], 10) : 1;
-
-            return {
-                mainError: "Undefined type error",
-                detailedError: `Undefined type '${typeName}' - check if the type is defined or imported correctly`,
-                filePath,
-                row,
-                column,
-            };
-        }
-
-        const locationMatch = errorMessage.match(/-->\s*(.+?):\s*(\d+):\s*(\d+)/);
-        if (locationMatch) {
-            const row = parseInt(locationMatch[2], 10);
-            const column = parseInt(locationMatch[3], 10);
-
-            const mainError = errorMessage.split("\n")[0]?.trim() || "Unknown error";
-
-            return {
-                mainError: "WIT parser error",
-                detailedError: mainError,
-                filePath,
-                row,
-                column,
-            };
-        }
-
-        const fallbackError = extractErrorInfo(errorMessage, filePath);
-        return fallbackError || null;
-    }
-
-    /**
-     * Parse wit-bindgen error messages to extract location information
-     * @param errorMessage - The error message from wit-bindgen
-     * @param filePath - The file path for the error
-     * @returns Parsed error information or null if parsing fails
-     */
-    public parseWitBindgenError(errorMessage: string, filePath: string): ReturnType<typeof extractErrorInfo> | null {
-        // Remove comment markers from the error message
-        const cleanMessage = errorMessage
-            .replace(/^\/\/\s*/, "")
-            .replace(/\n\/\/\s*/g, "\n")
-            .trim();
-
-        // Try to extract location information similar to wit-parser errors
-        const locationMatch = cleanMessage.match(/-->\s*(.*?):(\d+):(\d+)/);
-        if (locationMatch) {
-            const row = parseInt(locationMatch[2], 10);
-            const column = parseInt(locationMatch[3], 10);
-
-            const lines = cleanMessage.split("\n");
-            const mainError = lines[0] || cleanMessage;
-
-            return {
-                mainError: "WIT binding generation error",
-                detailedError: mainError.trim(),
-                filePath,
-                row,
-                column,
-            };
-        }
-
-        // Check for specific wit-bindgen error patterns
-        if (cleanMessage.includes("undefined type")) {
-            const typeMatch = cleanMessage.match(/undefined type `([^`]+)`/);
-            const typeName = typeMatch ? typeMatch[1] : "unknown";
-
-            return {
-                mainError: "Undefined type in bindings",
-                detailedError: `Undefined type '${typeName}' - ensure type is properly defined in WIT file`,
-                filePath,
-                row: 1,
-                column: 1,
-            };
-        }
-
-        if (cleanMessage.includes("failed to resolve")) {
-            return {
-                mainError: "Binding resolution error",
-                detailedError: cleanMessage,
-                filePath,
-                row: 1,
-                column: 1,
-            };
-        }
-
-        if (cleanMessage.includes("expected") && cleanMessage.includes("found")) {
-            return {
-                mainError: "Binding syntax error",
-                detailedError: cleanMessage,
-                filePath,
-                row: 1,
-                column: 1,
-            };
-        }
-
-        if (cleanMessage.includes("unsupported")) {
-            return {
-                mainError: "Unsupported feature",
-                detailedError: cleanMessage,
-                filePath,
-                row: 1,
-                column: 1,
-            };
-        }
-
-        // Return parsed info for any other error
-        return {
-            mainError: "Binding generation failed",
-            detailedError: cleanMessage,
-            filePath,
-            row: 1,
-            column: 1,
-        };
     }
 }

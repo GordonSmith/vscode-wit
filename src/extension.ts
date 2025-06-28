@@ -3,6 +3,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { WitSyntaxValidator } from "./validator.js";
 import { getWitBindgenVersionFromWasm, generateBindingsFromWasm } from "./wasmUtils.js";
+import { parseWitBindgenError } from "./errorParser.js";
 
 const builtinTypes = [
     "u8",
@@ -165,7 +166,7 @@ export function activate(context: vscode.ExtensionContext) {
                 if (errorFile) {
                     // There's an explicit error file - parse and report error to problems pane
                     const errorMessage = errorFile[1];
-                    const parsedError = validator.parseWitBindgenError(errorMessage, editor.document.uri.fsPath);
+                    const parsedError = parseWitBindgenError(errorMessage, editor.document.uri.fsPath);
 
                     if (parsedError) {
                         const diagnostic = validator.createDiagnosticFromError(parsedError, editor.document);
@@ -189,7 +190,7 @@ export function activate(context: vscode.ExtensionContext) {
                     // No files generated and no explicit error - parse and report to problems pane
                     const errorMessage =
                         "No files were generated. This may be due to invalid WIT syntax or unsupported features.";
-                    const parsedError = validator.parseWitBindgenError(errorMessage, editor.document.uri.fsPath);
+                    const parsedError = parseWitBindgenError(errorMessage, editor.document.uri.fsPath);
 
                     if (parsedError) {
                         const diagnostic = validator.createDiagnosticFromError(parsedError, editor.document);
@@ -247,7 +248,7 @@ export function activate(context: vscode.ExtensionContext) {
                 console.error("Failed to generate bindings:", error);
                 // Parse and report error to problems pane instead of dialog
                 const errorMessage = error instanceof Error ? error.message : String(error);
-                const parsedError = validator.parseWitBindgenError(errorMessage, editor.document.uri.fsPath);
+                const parsedError = parseWitBindgenError(errorMessage, editor.document.uri.fsPath);
 
                 if (parsedError) {
                     const diagnostic = validator.createDiagnosticFromError(parsedError, editor.document);
